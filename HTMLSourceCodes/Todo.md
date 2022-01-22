@@ -1,0 +1,10 @@
+- 使生成本地文件地址的方式更具有鲁棒性
+- 封装浏览器创建代码
+- 验证Execute JavaScript方法是否会在页面打开之后执行
+- 尝试在每次页面打开后都进行Execute JavaScript，也就是重写Onload方法
+- 实现JS=>Python、Python=>JS的Calling，如果不行，起码通过轮询实现GIL-Based Shared Variable Pool
+- 支持高DPI显示
+- 支持正确的窗口大小位置定义，最好能实现窗口居中
+- 试着能不能去除Windows默认窗口导航栏，使用HTML实现它
+- 试试在去掉窗口导航栏的情况下，在窗口周围添加阴影。
+

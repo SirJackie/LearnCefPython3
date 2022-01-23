@@ -39,15 +39,27 @@ def PythonFunction():
 
 browser = CreateBrowser("./HTMLSourceCodes/index.html")
 
+from win32api import GetMonitorInfo, MonitorFromPoint
+
+# Get Taskbar Height
+monitor_info = GetMonitorInfo(MonitorFromPoint((0,0)))
+monitor_area = monitor_info.get("Monitor")
+work_area = monitor_info.get("Work")
+taskbarHeight = monitor_area[3]-work_area[3]
+print("The taskbar height is", taskbarHeight)
+
 # Resize the window
 user32 = ctypes.windll.user32
-screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-windowWidth = screensize[0] * 0.8
-windowHeight = windowWidth / 16 * 9
+screenWidth = user32.GetSystemMetrics(0)
+screenHeight = user32.GetSystemMetrics(1)
+windowWidth = int(screenWidth * 0.98)
+windowHeight = int(windowWidth / 16 * 9)
 print(windowWidth, windowHeight)
 
 hwnd = win32gui.GetForegroundWindow()
-win32gui.MoveWindow(hwnd, 0, 0, 500, 500, True)
+win32gui.MoveWindow(hwnd, int((screenWidth-windowWidth)/2), int((screenHeight-taskbarHeight-windowHeight)/2), windowWidth, windowHeight, True)
+
+
 
 browser.SetClientHandler(LoadHandler())
 

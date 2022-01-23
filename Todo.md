@@ -1,5 +1,3 @@
-- 使生成本地文件地址的方式更具有鲁棒性
-- 封装浏览器创建代码
 - 验证Execute JavaScript方法是否会在页面打开之后执行
 - 尝试在每次页面打开后都进行Execute JavaScript，也就是重写Onload方法
 - 实现JS=>Python、Python=>JS的Calling，如果不行，起码通过轮询实现GIL-Based Shared Variable Pool

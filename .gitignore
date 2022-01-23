@@ -1,4 +1,7 @@
 /.idea/
 /blob_storage/
 /webrtc_event_logs/
+**/__pycache__/
 debug.log
+error.log
+

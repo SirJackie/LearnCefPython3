@@ -1,5 +1,3 @@
-- 验证Execute JavaScript方法是否会在页面打开之后执行
-- 尝试在每次页面打开后都进行Execute JavaScript，也就是重写Onload方法
 - 实现JS=>Python、Python=>JS的Calling，如果不行，起码通过轮询实现GIL-Based Shared Variable Pool
 - 支持高DPI显示
 - 支持正确的窗口大小位置定义，最好能实现窗口居中

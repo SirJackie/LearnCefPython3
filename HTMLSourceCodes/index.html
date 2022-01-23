@@ -120,14 +120,17 @@
     </div>
 
     <script>
-        var pyMsg = "No Message Came from Python.";
-
         function GetPyMsg(){
             alert(pyMsg);
+        }
+
+        function JSFunction(){
+            alert("JS received a call from Python.");
         }
     </script>
 
     <div class="mdui-list-item mdui-ripple mdui-color-yellow" onclick="GetPyMsg()">Get Python Passed Message</div>
+    <div class="mdui-list-item mdui-ripple mdui-color-lime" onclick="PythonFunction()">Execute Python Function</div>
 
 </body>
 

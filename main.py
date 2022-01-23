@@ -1,6 +1,7 @@
 from cefpython3 import cefpython as cef
 from BrowserHelper import *
 import win32gui
+import ctypes
 
 cef.DpiAware.EnableHighDpiSupport()
 
@@ -37,6 +38,12 @@ def PythonFunction():
 
 
 browser = CreateBrowser("./HTMLSourceCodes/index.html")
+
+# Resize the window
+# windowWidth = screensize
+user32 = ctypes.windll.user32
+screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+print(screensize)
 hwnd = win32gui.GetForegroundWindow()
 win32gui.MoveWindow(hwnd, 0, 0, 500, 500, True)
 

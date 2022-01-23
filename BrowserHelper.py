@@ -26,6 +26,6 @@ def LocalizeURL(URL):
 
 def CreateBrowser(URL):
     sys.excepthook = cef.ExceptHook
-    cef.Initialize()
+    cef.Initialize(settings={}, switches={'disable-gpu': ""})
     browser = cef.CreateBrowserSync(url=LocalizeURL(URL))
     return browser

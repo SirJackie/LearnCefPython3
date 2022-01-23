@@ -52,14 +52,12 @@ print("The taskbar height is", taskbarHeight)
 user32 = ctypes.windll.user32
 screenWidth = user32.GetSystemMetrics(0)
 screenHeight = user32.GetSystemMetrics(1)
-windowWidth = int(screenWidth * 0.98)
-windowHeight = int(windowWidth / 16 * 9)
+windowWidth = int(screenWidth * 0.97)
+windowHeight = int((screenHeight-taskbarHeight) * 0.97)
 print(windowWidth, windowHeight)
 
 hwnd = win32gui.GetForegroundWindow()
 win32gui.MoveWindow(hwnd, int((screenWidth-windowWidth)/2), int((screenHeight-taskbarHeight-windowHeight)/2), windowWidth, windowHeight, True)
-
-
 
 browser.SetClientHandler(LoadHandler())
 

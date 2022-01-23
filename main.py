@@ -40,10 +40,12 @@ def PythonFunction():
 browser = CreateBrowser("./HTMLSourceCodes/index.html")
 
 # Resize the window
-# windowWidth = screensize
 user32 = ctypes.windll.user32
 screensize = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-print(screensize)
+windowWidth = screensize[0] * 0.8
+windowHeight = windowWidth / 16 * 9
+print(windowWidth, windowHeight)
+
 hwnd = win32gui.GetForegroundWindow()
 win32gui.MoveWindow(hwnd, 0, 0, 500, 500, True)
 

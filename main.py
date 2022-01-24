@@ -61,18 +61,25 @@ def SetWindowSizeAndPos(width, height, left, top):
     win32gui.MoveWindow(hwnd, left, top, width, height, True)
 
 
+def GetLeftAndTopUsingWidthAndHeight(windowWidth, windowHeight):
+    screenWidth, screenHeight = GetScreenSize()
+    taskbarHeight = GetTaskBarHeight()
+
+    windowLeft = int((screenWidth - windowWidth) / 2)
+    windowTop = int(((screenHeight - taskbarHeight) - windowHeight) / 2)
+
+    return windowLeft, windowTop
+
+
 screenWidth, screenHeight = GetScreenSize()
 taskbarHeight = GetTaskBarHeight()
 
 windowWidth = int(screenWidth * 0.97)
-windowLeft = int((screenWidth - windowWidth) / 2)
 windowHeight = int((screenHeight - taskbarHeight) * 0.97)
-windowTop = int(((screenHeight - taskbarHeight) - windowHeight) / 2)
-print(windowWidth, windowHeight, windowLeft, windowTop)
+windowLeft, windowTop = GetLeftAndTopUsingWidthAndHeight(windowWidth, windowHeight)
 
 SetWindowSizeAndPos(windowWidth, windowHeight, windowLeft, windowTop)
 
 browser.SetClientHandler(LoadHandler())
-
 cef.MessageLoop()
 cef.Shutdown()

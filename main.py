@@ -3,9 +3,39 @@ from BrowserHelper import *
 from WindowHelper import *
 
 
-# 关于浏览器事件的客户端处理器
-class LoadHandler:
-    def OnLoadingStateChange(self, browser, is_loading, **_):
+def VariableHookee(url, name, value):
+    return {
+        "type": "VariableHookee",
+        "url": LocalizeURL(url) if url is not None else None,
+        "name": name,
+        "value": value
+    }
+
+
+def FunctionHookee(url, name, function):
+    return {
+        "type": "FunctionHookee",
+        "url": LocalizeURL(url) if url is not None else None,
+        "name": name,
+        "function": function
+    }
+
+
+def CodeHookee(url, jsCode):
+    return {
+        "type": "CodeHookee",
+        "url": LocalizeURL(url) if url is not None else None,
+        "jsCode": jsCode
+    }
+
+
+class Communicator:
+    # Public Hookees
+    hookees = []
+
+    # Hooker
+    @classmethod
+    def OnLoadingStateChange(cls, browser, is_loading, **_):
         # When the page is loading
         if not is_loading:
             # When the page finished loading
@@ -13,16 +43,19 @@ class LoadHandler:
             # Create JS Binding Object
             js = cef.JavascriptBindings()
 
-            # Pass Variable to JS (Variable Passing)
-            js.SetProperty("pyMsg", "A String from Python.")
+            for hookee in cls.hookees:
+                if hookee["type"] == "VariableHookee":
+                    # Pass Variable to JS
+                    js.SetProperty(hookee["name"], hookee["value"])
+                elif hookee["type"] == "FunctionHookee":
+                    # Bind Python Function to JS
+                    js.SetFunction(hookee["name"], hookee["function"])
+                elif hookee["type"] == "CodeHookee":
+                    # Python execute JS Code (immediately)
+                    browser.ExecuteJavascript(hookee["jsCode"])
 
-            # Bind Python Function to JS (JS Call Python)
-            js.SetFunction("PythonFunction", PythonFunction)
-
+            # Finish JS Binding Task
             browser.SetJavascriptBindings(js)
-
-            # Python call JS
-            browser.ExecuteJavascript("JSFunction()")
 
 
 count = 0
@@ -46,6 +79,13 @@ windowLeft, windowTop = GetLeftAndTopUsingWidthAndHeight(windowWidth, windowHeig
 
 SetWindowSizeAndPos(windowWidth, windowHeight, windowLeft, windowTop)
 
-browser.SetClientHandler(LoadHandler())
+Communicator.hookees.append(VariableHookee(None, "pyMsg", "A String from Python."))
+Communicator.hookees.append(FunctionHookee(None, "PythonFunction", PythonFunction))
+Communicator.hookees.append(CodeHookee(None, "JSFunction();"))
+
+browser.SetClientHandler(Communicator())
 cef.MessageLoop()
 cef.Shutdown()
+
+# js.SetProperty("pyMsg", "A String from Python.")
+# browser.ExecuteJavascript("JSFunction()")

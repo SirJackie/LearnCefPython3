@@ -1,6 +1,7 @@
 from cefpython3 import cefpython as cef
 from BrowserHelper import *
 import win32gui
+import win32api
 import ctypes
 
 cef.DpiAware.EnableHighDpiSupport()
@@ -39,25 +40,37 @@ def PythonFunction():
 
 browser = CreateBrowser("./HTMLSourceCodes/index.html")
 
-from win32api import GetMonitorInfo, MonitorFromPoint
 
-# Get Taskbar Height
-monitor_info = GetMonitorInfo(MonitorFromPoint((0,0)))
-monitor_area = monitor_info.get("Monitor")
-work_area = monitor_info.get("Work")
-taskbarHeight = monitor_area[3]-work_area[3]
-print("The taskbar height is", taskbarHeight)
+def GetTaskBarHeight():
+    monitorInfo = win32api.GetMonitorInfo(win32api.MonitorFromPoint((0, 0)))
+    monitorArea = monitorInfo.get("Monitor")
+    workArea = monitorInfo.get("Work")
+    taskbarHeight = monitorArea[3]-workArea[3]
+    return taskbarHeight
 
-# Resize the window
-user32 = ctypes.windll.user32
-screenWidth = user32.GetSystemMetrics(0)
-screenHeight = user32.GetSystemMetrics(1)
+
+def GetScreenSize():
+    user32 = ctypes.windll.user32
+    screenWidth = user32.GetSystemMetrics(0)
+    screenHeight = user32.GetSystemMetrics(1)
+    return screenWidth, screenHeight
+
+
+def SetWindowSizeAndPos(width, height, left, top):
+    hwnd = win32gui.GetForegroundWindow()
+    win32gui.MoveWindow(hwnd, left, top, width, height, True)
+
+
+screenWidth, screenHeight = GetScreenSize()
+taskbarHeight = GetTaskBarHeight()
+
 windowWidth = int(screenWidth * 0.97)
-windowHeight = int((screenHeight-taskbarHeight) * 0.97)
-print(windowWidth, windowHeight)
+windowLeft = int((screenWidth - windowWidth) / 2)
+windowHeight = int((screenHeight - taskbarHeight) * 0.97)
+windowTop = int(((screenHeight - taskbarHeight) - windowHeight) / 2)
+print(windowWidth, windowHeight, windowLeft, windowTop)
 
-hwnd = win32gui.GetForegroundWindow()
-win32gui.MoveWindow(hwnd, int((screenWidth-windowWidth)/2), int((screenHeight-taskbarHeight-windowHeight)/2), windowWidth, windowHeight, True)
+SetWindowSizeAndPos(windowWidth, windowHeight, windowLeft, windowTop)
 
 browser.SetClientHandler(LoadHandler())
 

@@ -4,6 +4,8 @@ import os
 import win32gui
 import win32api
 import ctypes
+import inspect
+import re
 
 
 def GetTaskBarHeight():
@@ -38,6 +40,17 @@ def GetLeftAndTopUsingWidthAndHeight(windowWidth, windowHeight):
 
 def EnableHighDPISupport():
     cef.DpiAware.EnableHighDpiSupport()
+
+
+def GetVariableName(vari):
+    for line in inspect.getframeinfo(inspect.currentframe().f_back)[3]:
+        m = re.search(r'\bGetVariableName\s*\(\s*([A-Za-z_][A-Za-z0-9_]*)\s*\)', line)
+        if m:
+            return m.group(1)
+
+
+def GetFunctionName(func):
+    return func.__name__
 
 
 def LocalizeURL(URL):
@@ -154,6 +167,15 @@ class JackieBrowser:
     @staticmethod
     def AddHookee(hookee):
         Communicator.hookees.append(hookee)
+
+    def Set(self, varName, varValue):
+        self.AddHookee(VariableHookee(None, varName, varValue))
+
+    def Add(self, func):
+        self.AddHookee(FunctionHookee(None, GetFunctionName(func), func))
+
+    def Execute(self, code):
+        self.AddHookee(CodeHookee(None, code))
 
     def Run(self):
         self.browser.SetClientHandler(Communicator())

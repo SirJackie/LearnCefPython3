@@ -8,8 +8,7 @@ def PythonFunction():
 
 
 browser = JackieBrowser("./HTMLSourceCodes/index.html")
-
-browser.AddHookee(VariableHookee(None, "pyMsg", "A String from Python."))
-browser.AddHookee(FunctionHookee(None, "PythonFunction", PythonFunction))
-browser.AddHookee(CodeHookee(None, "JSFunction();"))
+browser.Set("pythonVariable", pythonVariable)
+browser.Add(PythonFunction)
+browser.Execute("JSFunction();")
 browser.Run()

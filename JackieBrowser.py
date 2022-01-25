@@ -120,13 +120,16 @@ class Communicator:
             for hookee in cls.hookees:
                 if hookee["type"] == "VariableHookee":
                     # Pass Variable to JS
-                    js.SetProperty(hookee["name"], hookee["value"])
+                    if browser.GetUrl() == LocalizeURL(hookee["url"]):
+                        js.SetProperty(hookee["name"], hookee["value"])
                 elif hookee["type"] == "FunctionHookee":
                     # Bind Python Function to JS
-                    js.SetFunction(hookee["name"], hookee["function"])
+                    if browser.GetUrl() == LocalizeURL(hookee["url"]):
+                        js.SetFunction(hookee["name"], hookee["function"])
                 elif hookee["type"] == "CodeHookee":
                     # Python execute JS Code (immediately)
-                    browser.ExecuteJavascript(hookee["jsCode"])
+                    if browser.GetUrl() == LocalizeURL(hookee["url"]):
+                        browser.ExecuteJavascript(hookee["jsCode"])
 
             # Finish JS Binding Task
             browser.SetJavascriptBindings(js)
@@ -171,14 +174,14 @@ class JackieBrowser:
     def AddHookee(hookee):
         Communicator.hookees.append(hookee)
 
-    def Set(self, varName, varValue):
-        self.AddHookee(VariableHookee(None, varName, varValue))
+    def Set(self, url, varName, varValue):
+        self.AddHookee(VariableHookee(url, varName, varValue))
 
-    def Add(self, func):
-        self.AddHookee(FunctionHookee(None, GetFunctionName(func), func))
+    def Add(self, url, func):
+        self.AddHookee(FunctionHookee(url, GetFunctionName(func), func))
 
-    def Execute(self, code):
-        self.AddHookee(CodeHookee("http", code))
+    def Execute(self, url, code):
+        self.AddHookee(CodeHookee(url, code))
 
     def Run(self):
         self.browser.SetClientHandler(Communicator())

@@ -9,7 +9,8 @@ def PythonFunction():
 
 browser = JackieBrowser("./HTMLSourceCodes/index.html")
 # browser = JackieBrowser("http://www.baidu.com/")
-browser.Set("pythonVariable", pythonVariable)
-browser.Add(PythonFunction)
-browser.Execute("JSFunction();")
+# browser.Set(None, "pythonVariable", pythonVariable)
+# browser.Add(None, PythonFunction)
+# browser.Execute(None, "JSFunction();")
+browser.Execute("https://www.baidu.com/", "alert(\"Hello World!\");")
 browser.Run()

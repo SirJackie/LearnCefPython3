@@ -120,15 +120,15 @@ class Communicator:
             for hookee in cls.hookees:
                 if hookee["type"] == "VariableHookee":
                     # Pass Variable to JS
-                    if browser.GetUrl() == LocalizeURL(hookee["url"]):
+                    if hookee["url"] is None or browser.GetUrl() == LocalizeURL(hookee["url"]):
                         js.SetProperty(hookee["name"], hookee["value"])
                 elif hookee["type"] == "FunctionHookee":
                     # Bind Python Function to JS
-                    if browser.GetUrl() == LocalizeURL(hookee["url"]):
+                    if hookee["url"] is None or browser.GetUrl() == LocalizeURL(hookee["url"]):
                         js.SetFunction(hookee["name"], hookee["function"])
                 elif hookee["type"] == "CodeHookee":
                     # Python execute JS Code (immediately)
-                    if browser.GetUrl() == LocalizeURL(hookee["url"]):
+                    if hookee["url"] is None or browser.GetUrl() == LocalizeURL(hookee["url"]):
                         browser.ExecuteJavascript(hookee["jsCode"])
 
             # Finish JS Binding Task

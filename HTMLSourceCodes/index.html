@@ -120,17 +120,14 @@
     </div>
 
     <script>
-        function PrintPythonVariable(){
-            alert(pythonVariable);
-        }
-
-        function JSFunction(){
-            alert("JS received a call from Python.");
+        function AccessBaidu(){
+            window.location.href = "https://www.baidu.com/";
         }
     </script>
 
-    <div class="mdui-list-item mdui-ripple mdui-color-yellow" onclick="PrintPythonVariable()">Get Python Passed Message</div>
+    <div class="mdui-list-item mdui-ripple mdui-color-yellow" onclick="alert(pythonVariable)">Get Python Passed Message</div>
     <div class="mdui-list-item mdui-ripple mdui-color-lime" onclick="PythonFunction()">Execute Python Function</div>
+    <div class="mdui-list-item mdui-ripple mdui-color-orange" onclick="AccessBaidu()">Access Baidu</div>
 
 </body>
 

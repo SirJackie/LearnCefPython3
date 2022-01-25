@@ -8,6 +8,7 @@ def PythonFunction():
 
 
 browser = JackieBrowser("./HTMLSourceCodes/index.html")
+# browser = JackieBrowser("http://www.baidu.com/")
 browser.Set("pythonVariable", pythonVariable)
 browser.Add(PythonFunction)
 browser.Execute("JSFunction();")

@@ -54,10 +54,13 @@ def GetFunctionName(func):
 
 
 def LocalizeURL(URL):
-    # If the URL is based on HTTP or HTTPS protocol
-    if URL[0:4] == "http":
-        # Just return, don't process
+    # Try to find protocol sign
+    if URL.find("://") != -1:
+        # This URL has its own protocol, ust return, don't process
         return URL
+
+    # Have No Protocol, it must be a local file system path
+    # Transform it into a URL with 'file://' protocol
 
     # Linuxlize the URL
     linuxlizedURL = URL.replace("\\", "/")
@@ -175,7 +178,7 @@ class JackieBrowser:
         self.AddHookee(FunctionHookee(None, GetFunctionName(func), func))
 
     def Execute(self, code):
-        self.AddHookee(CodeHookee(None, code))
+        self.AddHookee(CodeHookee("http", code))
 
     def Run(self):
         self.browser.SetClientHandler(Communicator())

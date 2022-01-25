@@ -1,15 +1,13 @@
-from BrowserHelper import *
+from JackieBrowser import *
 
-count = 0
+pythonVariable = "A String From Python"
 
 
 def PythonFunction():
-    global count
-    count += 1
-    print("Python received a call from JS for the", str(count) + "th time.")
+    print("Python received a call from JS")
 
 
-browser = Browser("./HTMLSourceCodes/index.html")
+browser = JackieBrowser("./HTMLSourceCodes/index.html")
 
 browser.AddHookee(VariableHookee(None, "pyMsg", "A String from Python."))
 browser.AddHookee(FunctionHookee(None, "PythonFunction", PythonFunction))

@@ -125,7 +125,7 @@ class Communicator:
 # If I want to solve this problem, I may use metaclass to produce multiple Communicator classes.
 # But I don't think it is necessary as long as the Browser class is depended on single thread
 
-class Browser:
+class JackieBrowser:
     url = None
     browser = None
 
